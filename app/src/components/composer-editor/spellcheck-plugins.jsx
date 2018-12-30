@@ -59,7 +59,7 @@ function renderMark(props) {
         style={{
           backgroundImage: 'linear-gradient(to left, red 40%, rgba(255, 255, 255, 0) 0%)',
           backgroundPosition: 'bottom',
-          backgroundSize: '5px 1px',
+          backgroundSize: '5px 1.3px',
           backgroundRepeat: 'repeat-x',
         }}
       >
@@ -176,7 +176,7 @@ function onSpellcheckFullDocument(editor) {
   // re-determine the language the document is written in
   if (value.focusBlock) {
     const text = value.focusBlock.text;
-    if (text.length > 80) {
+    if (text.length > 60) {
       AppEnv.spellchecker.provideHintText(text.substr(text.length - 512, 512));
     }
   }

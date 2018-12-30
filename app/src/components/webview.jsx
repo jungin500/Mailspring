@@ -109,6 +109,7 @@ export default class Webview extends React.Component {
       'did-finish-load': this._webviewDidFinishLoad,
       'did-get-response-details': this._webviewDidGetResponseDetails,
       'console-message': this._onConsoleMessage,
+      'new-window': this._onNewWindow,
     };
     for (const event of Object.keys(listeners)) {
       webview.removeEventListener(event, listeners[event]);
@@ -123,6 +124,13 @@ export default class Webview extends React.Component {
   _onTryAgain = () => {
     const webview = ReactDOM.findDOMNode(this.refs.webview);
     webview.reload();
+  };
+
+  _onNewWindow = e => {
+    const { protocol } = url.parse(e.url);
+    if (protocol === 'http:' || protocol === 'https:') {
+      shell.openExternal(e.url);
+    }
   };
 
   _onConsoleMessage = e => {
@@ -174,9 +182,11 @@ export default class Webview extends React.Component {
     this.props.onDidFinishLoad(webview);
 
     // tweak the size of the webview to ensure it's contents have laid out
-    webview.style.bottom = '1px';
     window.requestAnimationFrame(() => {
-      webview.style.bottom = '0';
+      webview.style.bottom = '1px';
+      window.requestAnimationFrame(() => {
+        webview.style.bottom = '0';
+      });
     });
   };
 

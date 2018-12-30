@@ -58,6 +58,8 @@ module.exports = class MailspringWindow extends EventEmitter {
       resizable,
       webPreferences: {
         directWrite: true,
+        nodeIntegration: true,
+        contextIsolation: false,
       },
       autoHideMenuBar,
     };

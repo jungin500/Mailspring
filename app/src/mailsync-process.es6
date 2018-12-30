@@ -98,7 +98,7 @@ export default class MailsyncProcess extends EventEmitter {
       maximizable: false,
       closable: false,
       fullscreenable: false,
-      webPreferences: { nodeIntegration: false, javascript: false },
+      webPreferences: { nodeIntegration: false, javascript: false, contextIsolation: false },
     });
     this._win.setContentSize(350, 90);
     this._win.once('ready-to-show', () => {
@@ -224,7 +224,7 @@ export default class MailsyncProcess extends EventEmitter {
 
   kill() {
     console.warn('Terminating mailsync...');
-    this._proc.kill();
+    this._proc && this._proc.kill();
   }
 
   sync() {
@@ -297,7 +297,7 @@ export default class MailsyncProcess extends EventEmitter {
     if (!Utils) {
       Utils = require('mailspring-exports').Utils;
     }
-    console.log(`Sending to mailsync ${this.account.id}`, json);
+    console.log(`Sending to mailsync ${this.account ? this.account.id : '?'}`, json);
     const msg = `${JSON.stringify(json)}\n`;
     try {
       this._proc.stdin.write(msg, 'UTF8');
